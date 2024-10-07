@@ -96,7 +96,11 @@ export class Visual implements IVisual {
                     headerCell.textContent = category.source.displayName;
                     headerCell.style.border = "1px solid black"; // Border for header cells
                     headerCell.style.padding = "8px"; // Padding for header cells
-                    headerCell.style.textAlign = "left"; // Left align header cells
+                    headerCell.style.textAlign = "left"; // Left align header cells\
+                    // Hide header cells for "Month" and "Day"
+                    if (category.source.displayName === "Month" || category.source.displayName === "Day") {
+                        headerCell.style.display = "none"; // Hide the header cell
+                    }
                     headerRow.appendChild(headerCell);
                 });
 
@@ -198,6 +202,8 @@ distinctValues.forEach(value => {
             nestedTable.appendChild(headerRow);
 
             // Populate the nested table with rows of data (example data)
+
+            // Days
             for (let i = 0; i < 5; i++) { // Replace 5 with actual number of detail items
                 const detailRow: HTMLTableRowElement = document.createElement("tr");
                 const detailCell1: HTMLTableCellElement = document.createElement("td");
@@ -239,6 +245,16 @@ distinctValues.forEach(value => {
                     // Append the dropdown table to the main table
                     this.table.appendChild(dropdownTable);
                 // Generate table rows based on values
+
+
+
+
+
+
+
+
+                /* All Data Hidden
+
                 const rowCount = categorical.categories[0].values.length; // Assume all categories have the same row count
                 for (let i = 0; i < rowCount; i++) {
                     const dataRow: HTMLTableRowElement = document.createElement("tr");
@@ -252,6 +268,12 @@ distinctValues.forEach(value => {
                     });
                     this.table.appendChild(dataRow);
                 }
+
+
+                */
+
+
+
             }
         }
 
