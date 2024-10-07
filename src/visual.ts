@@ -98,7 +98,7 @@ export class Visual implements IVisual {
                     headerCell.style.padding = "8px"; // Padding for header cells
                     headerCell.style.textAlign = "left"; // Left align header cells\
                     // Hide header cells for "Month" and "Day"
-                    if (category.source.displayName === "Month" || category.source.displayName === "Day") {
+                    if (category.source.displayName !== "Year") {
                         headerCell.style.display = "none"; // Hide the header cell
                     }
                     headerRow.appendChild(headerCell);
@@ -132,6 +132,7 @@ export class Visual implements IVisual {
                     const dropdownTable: HTMLTableElement = document.createElement("table");
                     dropdownTable.style.width = "100%"; // Optional: make the dropdown table take full width
                     dropdownTable.style.borderCollapse = "collapse"; // Collapse borders
+                    dropdownTable.style.display = "block"; // Make it block level
 
                                 // Create a Set to hold distinct values
                     const distinctValues: Set<string> = new Set();
@@ -188,7 +189,8 @@ distinctValues.forEach(value => {
             nestedTable.style.borderCollapse = "collapse"; // Optional: make borders collapse
             nestedTable.style.width = "100%"; // Optional: make it full width
             nestedTable.style.border = "1px solid black"; // Optional: add a border to the dropdown table
-            
+            nestedTable.style.display = "block"; // Make it block level
+
             // Create a header row for the nested table
             const headerRow: HTMLTableRowElement = document.createElement("tr");
             const headerCell1: HTMLTableCellElement = document.createElement("th");
