@@ -1,0 +1,17 @@
+{
+		"version": "1.0.0.0",
+		"author": {"name":"Ho","email":"example@gmail.com"},
+		"resources": [
+			{
+				"resourceId": "rId0",
+				"sourceType": 5,
+				"file": "resources/hoWengYinMatrixTableE838FCB52C814B73BA60BDEF8BB87D49.pbiviz.json"
+			}
+		],
+		"visual": {"name":"hoWengYinMatrixTable","displayName":"HoWengYinMatrixTable","guid":"hoWengYinMatrixTableE838FCB52C814B73BA60BDEF8BB87D49","visualClassName":"Visual","version":"1.0.0.0","description":"Ho Weng Yin Matrix Table 1.0","supportUrl":"www.github.com","gitHubUrl":"https://github.com/BeautifulChemistry"},
+		"metadata": {
+			"pbivizjson": {
+				"resourceId": "rId0"
+			}
+		}
+	}
