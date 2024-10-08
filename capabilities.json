@@ -15,6 +15,11 @@
     "objects": {
         "dataPoint": {
             "properties": {
+                    "backgroundColor": {
+                      "displayName": "Background Color",
+                      "type": { "fill": { "solid": { "color": true } } }
+                    },
+                  
                 "defaultColor": {
                     "type": {
                         "fill": {

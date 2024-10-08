@@ -74,15 +74,27 @@ export class Visual implements IVisual {
             this.target.appendChild(new_p);
         }*/
     }
+    private getBackgroundColor(options: VisualUpdateOptions): string {
+        const defaultColor = "transparent"; // Set default background color as transparent
+        if (options.dataViews && options.dataViews[0] && options.dataViews[0].metadata.objects) {
+            const colorSelector = options.dataViews[0].metadata.objects["colorSelector"];
+            if (colorSelector && colorSelector["backgroundColor"]) {
+                return colorSelector["backgroundColor"].toString(); // Return the selected color
+            }
+        }
+        return defaultColor;
+    }
+    
 
     public update(options: VisualUpdateOptions) {
-        this.formattingSettings = this.formattingSettingsService.populateFormattingSettingsModel(VisualFormattingSettingsModel, options.dataViews[0]);
-
-        console.log('Visual update', options);
-        
+        this.formattingSettings = this.formattingSettingsService.populateFormattingSettingsModel(VisualFormattingSettingsModel, options.dataViews[0]);  
         // Clear previous table content
         this.table.innerHTML = "";
-
+        // Retrieve the background color
+        const backgroundColor = this.getBackgroundColor(options);
+            
+        // Apply the background color to the visual's container
+        this.table.style.backgroundColor = backgroundColor;
         // Generate table header
         if (options.dataViews && options.dataViews.length > 0) {
             const dataView = options.dataViews[0];
@@ -114,21 +126,7 @@ export class Visual implements IVisual {
                 firstCell.style.padding = "8px"; // Padding for the cell
                 firstRow.appendChild(firstCell);
                 this.table.appendChild(firstRow);
-                    // Create a hidden cell for dropdown content
-
-                    /*
-                    const dropdownCell: HTMLTableCellElement = document.createElement("td");
-                    dropdownCell.colSpan = categorical.categories.length; // Span across all columns
-                    dropdownCell.textContent = categorical.categories[1].values[0].toString();
-                    dropdownCell.style.display = "none"; // Hide it initially
-                    dropdownCell.style.border = "1px solid black"; // Border for the dropdown cell
-                    dropdownCell.style.padding = "8px"; // Padding for the dropdown cell
-                    dropdownCell.style.backgroundColor = "#f9f9f9"; // Optional styling
-
-                    this.table.appendChild(dropdownCell);
-                    */
-                   // Populate the dropdown table with rows from categorical.categories[1].values
-                   // Create a new table for dropdown content
+                   
                     const dropdownTable: HTMLTableElement = document.createElement("table");
                     dropdownTable.style.width = "100%"; // Optional: make the dropdown table take full width
                     dropdownTable.style.borderCollapse = "collapse"; // Collapse borders
@@ -143,28 +141,6 @@ export class Visual implements IVisual {
                         distinctValues.add(value); // Add to Set (automatically handles duplicates)
                     }
 
-                    // Now populate the dropdown table with rows from distinct values
-                    /*
-                    distinctValues.forEach(value => {
-                        const dropdownRow: HTMLTableRowElement = document.createElement("tr");
-                        const dropdownCell: HTMLTableCellElement = document.createElement("td");
-                        
-                        dropdownCell.textContent = value; // Use the distinct value
-                        dropdownCell.style.border = "1px solid black"; // Border for dropdown cells
-                        dropdownCell.style.padding = "8px"; // Padding for dropdown cells
-                        dropdownRow.appendChild(dropdownCell);
-
-                        // Add a click event listener to the dropdown row
-                        dropdownRow.style.cursor = "pointer"; // Change cursor to pointer for better UX
-                        dropdownRow.onclick = () => {
-                            // Define your action here when a row is clicked
-                            console.log(`You clicked on: ${value}`); // Example action: log the value
-                            // You can also display more details or perform any other actions
-                        };
-
-                        // Append the dropdown row to the dropdown table
-                        dropdownTable.appendChild(dropdownRow);
-                    });*/
 
                     // Now populate the dropdown table with rows from distinct values
 distinctValues.forEach(value => {
@@ -180,8 +156,10 @@ distinctValues.forEach(value => {
     dropdownRow.style.cursor = "pointer"; // Change cursor to pointer for better UX
     dropdownRow.onclick = () => {
         // Create or toggle the dropdown content table
-        let nestedTable = dropdownRow.querySelector(".nested-table") as HTMLTableElement;
+        const rowValue = dropdownRow.textContent?.trim(); // Assuming value is in the row's text
 
+        let nestedTable = dropdownRow.querySelector(".nested-table") as HTMLTableElement;
+        // Day
         if (!nestedTable) {
             // Create the nested table if it doesn't exist
             nestedTable = document.createElement("table");
@@ -192,32 +170,72 @@ distinctValues.forEach(value => {
             nestedTable.style.display = "block"; // Make it block level
 
             // Create a header row for the nested table
-            const headerRow: HTMLTableRowElement = document.createElement("tr");
-            const headerCell1: HTMLTableCellElement = document.createElement("th");
-            headerCell1.textContent = "Detail 1"; // Replace with actual detail
-            const headerCell2: HTMLTableCellElement = document.createElement("th");
-            headerCell2.textContent = "Detail 2"; // Replace with actual detail
-            headerCell1.style.border = "1px solid black"; // Border for header cells
-            headerCell2.style.border = "1px solid black"; // Border for header cells
-            headerRow.appendChild(headerCell1);
-            headerRow.appendChild(headerCell2);
-            nestedTable.appendChild(headerRow);
-
-            // Populate the nested table with rows of data (example data)
-
+            //const headerRow: HTMLTableRowElement = document.createElement("tr");
+            //const headerCell1: HTMLTableCellElement = document.createElement("th");
+            //headerCell1.textContent = "Detail 1"; // Replace with actual detail
+  
+            //headerCell1.style.border = "1px solid black"; // Border for header cells
+            //headerRow.appendChild(headerCell1);
+            //nestedTable.appendChild(headerRow);
             // Days
+    // Loop through the data and check for a match with rowValue
+    for (let i = 0; i < categorical.categories[1].values.length; i++) {
+        // Compare current value with rowValue
+        const category1Value = categorical.categories[1].values[i]?.toString();
+        if (category1Value === rowValue) {
+            // If it matches, create a new row with the corresponding value from categories[2]
+            const detailRow: HTMLTableRowElement = document.createElement("tr");
+
+            // First detail cell with rowValue
+            //const detailCell1: HTMLTableCellElement = document.createElement("td");
+            //detailCell1.textContent = `${rowValue} Detail ${i + 1}`; // Use rowValue here
+            //detailCell1.style.border = "1px solid black"; // Border for detail cells
+
+            // Second detail cell with the corresponding value from categorical.categories[2]
+            const detailCell1: HTMLTableCellElement = document.createElement("td");
+            detailCell1.textContent = `${rowValue} ` + categorical.categories[2].values[i]?.toString(); // Get the matching value from categories[2]
+            detailCell1.style.border = "1px solid black"; // Border for detail cells
+
+            // Append the cells to the row
+            //detailRow.appendChild(detailCell1);
+            detailRow.appendChild(detailCell1);
+
+            // Append the detail row to the nested table
+            nestedTable.appendChild(detailRow);
+             // Create a new row (tr) and cell (td) for the corresponding value from categories[2]
+                const newRow: HTMLTableRowElement = document.createElement("tr");
+                const newCell: HTMLTableCellElement = document.createElement("td");
+                newCell.textContent = `Matching Value: ${categorical.categories[2].values[i]?.toString()}`; // Use categories[2] value
+                newCell.style.border = "1px solid black"; // Border for new cell
+                newRow.style.display = "none"; // Initially hidden
+                newRow.appendChild(newCell);
+
+                // Append the new row to the nested table
+                nestedTable.appendChild(newRow);
+
+                // Add a click event to the first detail row to toggle the visibility of the second row
+                detailRow.onclick = () => {
+                    // Toggle the visibility of the new row
+                    newRow.style.display = (newRow.style.display === "none") ? "table-row" : "none";
+                };
+        }
+    }
+
+
+        
+            /*
             for (let i = 0; i < 5; i++) { // Replace 5 with actual number of detail items
                 const detailRow: HTMLTableRowElement = document.createElement("tr");
                 const detailCell1: HTMLTableCellElement = document.createElement("td");
                 detailCell1.textContent = `${value} Detail ${i + 1}`; // Replace with actual detail data
                 const detailCell2: HTMLTableCellElement = document.createElement("td");
-                detailCell2.textContent = `Value ${i + 1}`; // Replace with actual detail data
+                detailCell2.textContent = `Value ${i + 1} ` + rowValue + ' , ' +   categorical.categories[2].values[i]?.toString(); // Replace with actual detail data
                 detailCell1.style.border = "1px solid black"; // Border for detail cells
                 detailCell2.style.border = "1px solid black"; // Border for detail cells
                 detailRow.appendChild(detailCell1);
                 detailRow.appendChild(detailCell2);
                 nestedTable.appendChild(detailRow);
-            }
+            }*/
 
             dropdownRow.appendChild(nestedTable); // Append the nested table to the row
         } else {
@@ -283,6 +301,8 @@ distinctValues.forEach(value => {
         if (this.textNode) {
             this.textNode.textContent = (this.updateCount++).toString();
         }
+
+        
     }
 
     public getFormattingModel(): powerbi.visuals.FormattingModel {
