@@ -138,7 +138,8 @@ export class Visual implements IVisual {
 
                     // Append the header row to the table
                     this.table.appendChild(newheaderRow);
-                    //
+                    // Year 2024
+                    /*
                 const firstCell: HTMLTableCellElement = document.createElement("td");
                 const firstRow: HTMLTableRowElement = document.createElement("tr");
 
@@ -146,6 +147,44 @@ export class Visual implements IVisual {
                 firstCell.style.border = "1px solid white"; // Border for the cell
                 firstRow.appendChild(firstCell);
                 this.table.appendChild(firstRow);
+                */
+               // Year 2024
+
+               // Create the first row
+const firstRow: HTMLTableRowElement = document.createElement("tr");
+
+// Create the first cell and append it to the first row
+const firstCell: HTMLTableCellElement = document.createElement("td");
+firstCell.textContent = categorical.categories[0].values[0]?.toString() || ""; // Get the first value
+firstCell.style.border = "1px solid white"; // Border for the first cell
+firstRow.appendChild(firstCell);
+
+// Create the second cell
+const secondCell2: HTMLTableCellElement = document.createElement("td");
+secondCell2.textContent = "Second Cell Content"; // Set content for the second cell
+secondCell2.style.border = "1px solid white"; // Border for the second cell
+firstRow.appendChild(secondCell2); // Append the second cell to the first row
+
+// Create the third cell
+const thirdCell2: HTMLTableCellElement = document.createElement("td");
+thirdCell2.textContent = "Third Cell Content"; // Set content for the third cell
+thirdCell2.style.border = "1px solid white"; // Border for the third cell
+firstRow.appendChild(thirdCell2); // Append the third cell to the first row
+
+
+// Create the third cell
+const thirdCell3: HTMLTableCellElement = document.createElement("td");
+thirdCell3.textContent = "Third Cell Content"; // Set content for the third cell
+thirdCell3.style.border = "1px solid white"; // Border for the third cell
+firstRow.appendChild(thirdCell3); // Append the third cell to the first row
+
+
+// Append the entire row to the table
+this.table.appendChild(firstRow);
+
+
+
+                ///////////////////////////////////////////
                    
                     const dropdownTable: HTMLTableElement = document.createElement("table");
                     dropdownTable.style.width = "100%"; // Optional: make the dropdown table take full width
@@ -171,6 +210,8 @@ distinctValues.forEach(value => {
     dropdownCell.style.border = "1px solid white"; // Border for dropdown cells
     dropdownCell.style.padding = "8px"; // Padding for dropdown cells
     dropdownRow.appendChild(dropdownCell);
+//
+
 
     // Add a click event listener to the dropdown row
     dropdownRow.style.cursor = "pointer"; // Change cursor to pointer for better UX
@@ -315,22 +356,148 @@ distinctValues.forEach(value => {
 
 
 
-                    // Initially hide the dropdown table
-                    dropdownTable.style.display = "none"; // Hide it initially
-                    // Add click event to the first row
-                // Add click event to the first row
-                        firstRow.onclick = () => {
-                            // Toggle visibility of the dropdown table
-                            if (dropdownTable.style.display === "none") {
-                                dropdownTable.style.display = "table"; // Show the dropdown table
-                            } else {
-                                dropdownTable.style.display = "none"; // Hide the dropdown table
-                            }
-                        };
-                    // Append the dropdown table to the main table
-                    this.table.appendChild(dropdownTable);
+             
+                    /*
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    */
+                  // Create the cell that will hold the dropdown table
+// Create the first cell that will hold the dropdown table
+const dropdownCell: HTMLTableCellElement = document.createElement("td");
+
+// Create the row that will hold the cells
+const dropdownRow: HTMLTableRowElement = document.createElement("tr");
+
+// Append the dropdown table into the first cell
+dropdownCell.appendChild(dropdownTable); // 'dropdownTable' is appended to the first <td>
+
+// Style the first cell as needed
+dropdownCell.style.border = "1px solid white"; // Border for the cell
+dropdownCell.style.padding = "8px"; // Padding for the cell
+
+// Append the first cell to the row
+dropdownRow.appendChild(dropdownCell);
+
+// Create the second cell
+const secondCell: HTMLTableCellElement = document.createElement("td");
+
+// Set content for the second cell
+secondCell.textContent = "Second Cell Content"; // You can set the content or leave it empty
+
+// Style the second cell as needed
+secondCell.style.border = "1px solid white"; // Border for the second cell
+secondCell.style.padding = "8px"; // Padding for the second cell
+
+// Append the second cell to the row
+dropdownRow.appendChild(secondCell);
+
+// Create the third cell
+const thirdCell: HTMLTableCellElement = document.createElement("td");
+
+// Set content for the third cell
+thirdCell.textContent = "Third Cell Content"; // Set the content or leave it empty
+
+// Style the third cell as needed
+thirdCell.style.border = "1px solid white"; // Border for the third cell
+thirdCell.style.padding = "8px"; // Padding for the third cell
+
+// Append the third cell to the row
+dropdownRow.appendChild(thirdCell);
+
+// Create the fourth cell
+const fourthCell: HTMLTableCellElement = document.createElement("td");
+
+// Set content for the fourth cell
+fourthCell.textContent = "Fourth Cell Content"; // Set the content or leave it empty
+
+// Style the fourth cell as needed
+fourthCell.style.border = "1px solid white"; // Border for the fourth cell
+fourthCell.style.padding = "8px"; // Padding for the fourth cell
+
+// Append the fourth cell to the row
+dropdownRow.appendChild(fourthCell);
+
+// Append the row to the main table (assuming 'this.table' is the main table)
+this.table.appendChild(dropdownRow);
+
+
+
+                /*
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                */
+
+       // Initially hide the dropdown table
+       dropdownTable.style.display = "none"; // Hide it initially
+       dropdownCell.style.display = "none";
+       secondCell.style.display = 'none';
+       thirdCell.style.display = 'none';
+       fourthCell.style.display = 'none';
+       // Add click event to the first row
+   // Add click event to the first row
+           firstRow.onclick = () => {
+               // Toggle visibility of the dropdown table
+               if (dropdownTable.style.display === "none") {
+                   dropdownTable.style.display = "table"; // Show the dropdown table
+                   dropdownCell.style.display = "table-cell";
+                   secondCell.style.display = "table-cell";   // Make the secondCell visible
+                    thirdCell.style.display = "table-cell";    // Make the thirdCell visible
+                    fourthCell.style.display = 'table-cell';
+
+               } else {
+                   dropdownTable.style.display = "none"; // Hide the dropdown table
+                   dropdownCell.style.display = "none";
+
+                   secondCell.style.display = "none";   // Make the secondCell visible
+                   thirdCell.style.display = "none";    // Make the thirdCell visible
+                   fourthCell.style.display = 'none';
+
+               }
+           };
+       // Append the dropdown table to the main table
+       // Create a cell within the row
 
 
             }
