@@ -179,6 +179,8 @@ distinctValues.forEach(value => {
             //nestedTable.appendChild(headerRow);
             // Days
     // Loop through the data and check for a match with rowValue
+
+    /*
     for (let i = 0; i < categorical.categories[1].values.length; i++) {
         // Compare current value with rowValue
         const category1Value = categorical.categories[1].values[i]?.toString();
@@ -219,10 +221,47 @@ distinctValues.forEach(value => {
                     newRow.style.display = (newRow.style.display === "none") ? "table-row" : "none";
                 };
         }
-    }
+    } */
 
 
+        for (let i = 0; i < categorical.categories[1].values.length; i++) {
+            // Compare current value with rowValue
+            const category1Value = categorical.categories[1].values[i]?.toString(); // Month
+            const category2Value = categorical.categories[2].values[i]?.toString(); // Day
+            
+            if (category1Value === rowValue) { // When rowValue matches with Month
+                // If it matches, create a new row with the corresponding value from categories[2] (Day)
+                const detailRow: HTMLTableRowElement = document.createElement("tr");
         
+                // First detail cell with rowValue (Month)
+                const detailCell1: HTMLTableCellElement = document.createElement("td");
+                detailCell1.textContent = `${rowValue} Detail ${i + 1}`; // Use rowValue (Month here)
+
+                detailCell1.style.border = "1px solid black"; // Border for detail cells
+                detailRow.appendChild(detailCell1);
+        
+                // Append the first detail cell to the row
+                nestedTable.appendChild(detailRow);
+        
+                // Create a new row (tr) and cell (td) for the corresponding value from categories[2] (Day)
+                const newRow: HTMLTableRowElement = document.createElement("tr");
+                const newCell: HTMLTableCellElement = document.createElement("td");
+                newCell.textContent = ` ${category1Value} and ${category2Value}`; // Use categories[2] value (Day)
+                newCell.style.border = "1px solid black"; // Border for new cell
+                newRow.style.display = "none"; // Initially hidden
+                newRow.appendChild(newCell);
+        
+                // Append the new row to the nested table
+                nestedTable.appendChild(newRow);
+        
+                // Add a click event to the first detail row to toggle the visibility of the second row
+                detailRow.onclick = () => {
+                    // Toggle the visibility of the new row
+                    newRow.style.display = (newRow.style.display === "none") ? "table-row" : "none";
+                };
+            }
+        }
+              
             /*
             for (let i = 0; i < 5; i++) { // Replace 5 with actual number of detail items
                 const detailRow: HTMLTableRowElement = document.createElement("tr");
@@ -241,6 +280,7 @@ distinctValues.forEach(value => {
         } else {
             // Toggle visibility
             nestedTable.style.display = nestedTable.style.display === "table" ? "none" : "table";
+
         }
     };
 
