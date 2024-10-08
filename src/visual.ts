@@ -247,6 +247,27 @@ distinctValues.forEach(value => {
                 const newRow: HTMLTableRowElement = document.createElement("tr");
                 const newCell: HTMLTableCellElement = document.createElement("td");
                 newCell.textContent = ` ${category1Value} and ${category2Value}`; // Use categories[2] value (Day)
+                // Each Day Date
+            // Assume rowValue is already defined or passed in the context
+            for (let x = 0; x < categorical.categories[1].values.length; x++) {
+                const category1Value = categorical.categories[1].values[x]?.toString(); // Month
+
+                for (let y = 0; y < categorical.categories[2].values.length; y++) {
+                    const category2Value = categorical.categories[2].values[y]?.toString(); // Day
+
+                    //console.log(`Index x: ${x}, Month = ${category1Value}, Index y: ${y}, Day = ${category2Value}`); // Log both loop values
+
+                    // Check for matching conditions (optional)
+                    if (category1Value === rowValue && category2Value === category2Value) {
+                        //newCell.textContent = ` atch found at x: ${x}, y: ${y} + " "${category1Value} and ${category2Value}`; // Use categories[2] value (Day)
+                        newCell.textContent = categorical.categories[3].values[x].toString();
+                        // Additional actions here
+                    }
+                }
+            }
+
+
+                //
                 newCell.style.border = "1px solid black"; // Border for new cell
                 newRow.style.display = "none"; // Initially hidden
                 newRow.appendChild(newCell);
