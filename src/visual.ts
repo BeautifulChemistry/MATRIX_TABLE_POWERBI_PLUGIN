@@ -54,12 +54,16 @@ export class Visual implements IVisual {
         tableContainer.style.overflowY = "auto"; // Enable vertical scrolling
         
         tableContainer.style.maxHeight = "900px"; // Set a fixed max height for the scrollable area
+        tableContainer.style.backgroundColor = '';
         this.target.appendChild(tableContainer);
 
         // Create and append a table to the container
         this.table = document.createElement("table");
         this.table.style.width = "100%";
         this.table.style.borderCollapse = "collapse";
+        this.table.style.color = 'white';
+        tableContainer.style.backgroundColor = "transparent"; // Set the background color to transparent
+
         tableContainer.appendChild(this.table);
 
         // Create paragraph to show update count
@@ -106,11 +110,10 @@ export class Visual implements IVisual {
                 categorical.categories.forEach(category => {
                     const headerCell: HTMLTableCellElement = document.createElement("th");
                     headerCell.textContent = category.source.displayName;
-                    headerCell.style.border = "1px solid black"; // Border for header cells
-                    headerCell.style.padding = "8px"; // Padding for header cells
+                    headerCell.style.border = "1px solid white"; // Border for header cells
                     headerCell.style.textAlign = "left"; // Left align header cells\
                     // Hide header cells for "Month" and "Day"
-                    if (category.source.displayName !== "Year") {
+                    if (category.source.displayName !== "Year" || "HC as today" || "Resign Employee" || "Balance HC" ) {
                         headerCell.style.display = "none"; // Hide the header cell
                     }
                     headerRow.appendChild(headerCell);
@@ -118,12 +121,29 @@ export class Visual implements IVisual {
 
                 // Append header row to the table
                 this.table.appendChild(headerRow);
+
+                // Create the new row and cell that will be inserted before the current row
+              // Create the header row with specific titles
+                    const newheaderRow: HTMLTableRowElement = document.createElement("tr");
+
+                    const headers = ["Year", "HC as today", "Resign Employee", "Balance HC"];
+
+                    // Loop through the headers array to create and append header cells
+                    headers.forEach(header => {
+                        const headerCell: HTMLTableCellElement = document.createElement("th");
+                        headerCell.textContent = header;
+                        headerCell.style.border = "1px solid white"; // Add border for the header
+                        newheaderRow.appendChild(headerCell);
+                    });
+
+                    // Append the header row to the table
+                    this.table.appendChild(newheaderRow);
+                    //
                 const firstCell: HTMLTableCellElement = document.createElement("td");
                 const firstRow: HTMLTableRowElement = document.createElement("tr");
 
                 firstCell.textContent = categorical.categories[0].values[0]?.toString() || ""; // Get the first value
-                firstCell.style.border = "1px solid black"; // Border for the cell
-                firstCell.style.padding = "8px"; // Padding for the cell
+                firstCell.style.border = "1px solid white"; // Border for the cell
                 firstRow.appendChild(firstCell);
                 this.table.appendChild(firstRow);
                    
@@ -148,7 +168,7 @@ distinctValues.forEach(value => {
     const dropdownCell: HTMLTableCellElement = document.createElement("td");
 
     dropdownCell.textContent = value; // Use the distinct value
-    dropdownCell.style.border = "1px solid black"; // Border for dropdown cells
+    dropdownCell.style.border = "1px solid white"; // Border for dropdown cells
     dropdownCell.style.padding = "8px"; // Padding for dropdown cells
     dropdownRow.appendChild(dropdownCell);
 
@@ -166,17 +186,8 @@ distinctValues.forEach(value => {
             nestedTable.className = "nested-table";
             nestedTable.style.borderCollapse = "collapse"; // Optional: make borders collapse
             nestedTable.style.width = "100%"; // Optional: make it full width
-            nestedTable.style.border = "1px solid black"; // Optional: add a border to the dropdown table
+            nestedTable.style.border = "1px solid white"; // Optional: add a border to the dropdown table
             nestedTable.style.display = "block"; // Make it block level
-
-            // Create a header row for the nested table
-            //const headerRow: HTMLTableRowElement = document.createElement("tr");
-            //const headerCell1: HTMLTableCellElement = document.createElement("th");
-            //headerCell1.textContent = "Detail 1"; // Replace with actual detail
-  
-            //headerCell1.style.border = "1px solid black"; // Border for header cells
-            //headerRow.appendChild(headerCell1);
-            //nestedTable.appendChild(headerRow);
             // Days
     // Loop through the data and check for a match with rowValue
 
@@ -235,9 +246,12 @@ distinctValues.forEach(value => {
         
                 // First detail cell with rowValue (Month)
                 const detailCell1: HTMLTableCellElement = document.createElement("td");
-                detailCell1.textContent = `${rowValue} Detail ${i + 1}`; // Use rowValue (Month here)
+                // 天數
+                // Ho Weng Yin
+                detailCell1.textContent = ` ${i + 1}`; // Use rowValue (Day here)
 
-                detailCell1.style.border = "1px solid black"; // Border for detail cells
+                detailCell1.style.border = "1px solid white"; // Border for detail cells
+                detailCell1.style.backgroundColor = '';
                 detailRow.appendChild(detailCell1);
         
                 // Append the first detail cell to the row
@@ -261,20 +275,22 @@ distinctValues.forEach(value => {
                     if (category1Value === rowValue && category2Value === category2Value) {
                         //newCell.textContent = ` atch found at x: ${x}, y: ${y} + " "${category1Value} and ${category2Value}`; // Use categories[2] value (Day)
                         newCell.textContent = categorical.categories[3].values[x].toString();
-                        // Additional actions here
+                        newCell.style.border = "1px solid white"; // Border for new cell
+                        newRow.style.display = "none"; // Initially hidden
+                        newRow.appendChild(newCell);
+
                     }
                 }
             }
 
 
                 //
-                newCell.style.border = "1px solid black"; // Border for new cell
-                newRow.style.display = "none"; // Initially hidden
-                newRow.appendChild(newCell);
+             
         
                 // Append the new row to the nested table
                 nestedTable.appendChild(newRow);
-        
+                nestedTable.style.backgroundColor = '';
+
                 // Add a click event to the first detail row to toggle the visibility of the second row
                 detailRow.onclick = () => {
                     // Toggle the visibility of the new row
@@ -282,24 +298,12 @@ distinctValues.forEach(value => {
                 };
             }
         }
-              
-            /*
-            for (let i = 0; i < 5; i++) { // Replace 5 with actual number of detail items
-                const detailRow: HTMLTableRowElement = document.createElement("tr");
-                const detailCell1: HTMLTableCellElement = document.createElement("td");
-                detailCell1.textContent = `${value} Detail ${i + 1}`; // Replace with actual detail data
-                const detailCell2: HTMLTableCellElement = document.createElement("td");
-                detailCell2.textContent = `Value ${i + 1} ` + rowValue + ' , ' +   categorical.categories[2].values[i]?.toString(); // Replace with actual detail data
-                detailCell1.style.border = "1px solid black"; // Border for detail cells
-                detailCell2.style.border = "1px solid black"; // Border for detail cells
-                detailRow.appendChild(detailCell1);
-                detailRow.appendChild(detailCell2);
-                nestedTable.appendChild(detailRow);
-            }*/
+            
 
             dropdownRow.appendChild(nestedTable); // Append the nested table to the row
         } else {
             // Toggle visibility
+            nestedTable.style.backgroundColor = '';
             nestedTable.style.display = nestedTable.style.display === "table" ? "none" : "table";
 
         }
@@ -325,44 +329,12 @@ distinctValues.forEach(value => {
                         };
                     // Append the dropdown table to the main table
                     this.table.appendChild(dropdownTable);
-                // Generate table rows based on values
 
-
-
-
-
-
-
-
-                /* All Data Hidden
-
-                const rowCount = categorical.categories[0].values.length; // Assume all categories have the same row count
-                for (let i = 0; i < rowCount; i++) {
-                    const dataRow: HTMLTableRowElement = document.createElement("tr");
-                    categorical.categories.forEach(category => {
-                        
-                        const dataCell: HTMLTableCellElement = document.createElement("td");
-                        dataCell.textContent = category.values[i]?.toString() + " , Category: " + categorical.categories[1].values[0] || ""; // Display the category value
-                        dataCell.style.border = "1px solid black"; // Border for data cells
-                        dataCell.style.padding = "8px"; // Padding for data cells
-                        dataRow.appendChild(dataCell);
-                    });
-                    this.table.appendChild(dataRow);
-                }
-
-
-                */
 
 
 
             }
         }
-
-        // Update the count display
-        if (this.textNode) {
-            this.textNode.textContent = (this.updateCount++).toString();
-        }
-
         
     }
 
